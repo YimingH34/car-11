@@ -1,4 +1,21 @@
-let distance = 0
+radio.onReceivedNumber(function (receivedNumber) {
+    if (receivedNumber == 4) {
+        Right()
+        basic.pause(770)
+    } else if (receivedNumber == 3) {
+        left()
+        basic.pause(770)
+    } else if (receivedNumber == 2) {
+        Forward()
+        basic.pause(770)
+    } else if (receivedNumber == 1) {
+        Backward()
+        basic.pause(770)
+    } else if (receivedNumber == 5) {
+        stop()
+        basic.pause(770)
+    }
+})
 function Forward () {
     pins.servoSetPulse(AnalogPin.P12, 1700)
     pins.servoSetPulse(AnalogPin.P14, 1300)
@@ -32,17 +49,17 @@ function Backward () {
     pins.servoSetPulse(AnalogPin.P14, 1700)
     control.waitMicros(20000)
 }
-basic.forever(function () {
+let distance = 0
+radio.setGroup(159)
+while (false) {
     Forward()
-    basic.pause(100)
+    basic.pause(500)
     sensor()
-    if (distance < 10) {
+    if (distance >= 15) {
+        left()
+        basic.pause(1000)
+    } else if (distance <= 2) {
         Right()
-        basic.pause(770)
-        sensor()
-        if (distance < 10) {
-            left()
-            basic.pause(1700)
-        }
+        basic.pause(200)
     }
-})
+}
